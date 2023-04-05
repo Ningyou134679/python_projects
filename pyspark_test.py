@@ -45,16 +45,24 @@ df = spark.createDataFrame(data, schema=schema)
 df.printSchema()
 
 
-# In[6]:
-
-
-df.show(truncate=False)
-
-
 # In[8]:
 
 
+df.show(5,truncate=False)
+
+
+# In[12]:
+
+
 output = df.withColumn('labels', col('labels').cast('string'))
-#output.write.csv(path='/Downloads/pyspark_test.csv', header="true", mode="overwrite")
-output.toPandas().to_csv("/Downloads/test.csv")
+output.write.csv(path='pyspark_test.csv', header="true", mode="overwrite")
+#output.toPandas().to_csv("test.csv")
+
+
+# In[14]:
+
+
+output_df = spark.read.csv('pyspark_test.csv', header = True)
+output_df.printSchema()
+output_df.show(5,False)
 
